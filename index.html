@@ -4,7 +4,7 @@
 <head>
 
 	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width"/>    
+	<meta name="viewport" content="width=device-width"/>    
 
 	<title>add block playground</title>
 
@@ -83,16 +83,16 @@
 
 		}
 		
-		// If the addblock is currently positioned absolutely (via @media query in css), match its position to the placeholder's position.
+		// If the placeholder is currently visible and taking up space (via styling within @media query), match the add block's position to the placeholder's position.
 		function hopAddBlock() {
 
 	    	var placeholder = document.getElementById('add-block-placer'),
 	    		addBlock = document.getElementById('add-block'),
-	    		curStyle = document.defaultView.getComputedStyle(addBlock, null).getPropertyValue('position'), // TODO: not cross-browser friendly
+	    		curStyle = document.defaultView.getComputedStyle(placeholder, null).getPropertyValue('display'), // TODO: not cross-browser friendly
 	    		pTop,
 	    		pLeft;
 				
-	    	if (curStyle == 'absolute') {
+	    	if (curStyle == 'block') {
 	    		curPos = findPos(placeholder);
 	    		pLeft = curPos.left;
 	    		pTop = curPos.top;
