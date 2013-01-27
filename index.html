@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="author" content="" />
+	<meta name="description" content="" />
+	<meta name="robots" content="index, follow" />
+    <meta name="viewport" content="width=device-width"/>    
+
+	<title></title>
+
+    <link rel="stylesheet" href="" type="text/css" media="screen, projection" />
+
+	<style type="text/css">
+		.article { max-width: 800px; margin: 0 auto; }
+		.add {}
+		#add-block { position: static; width: 300px; height: 310px; margin: 0 auto; opacity: .8; }
+		#add-block-placer { display: none; width:0; height: 0; background: grey; }
+
+		@media only screen and (min-width: 768px) {
+			#add-block-placer { display: inline; background: grey; float: right; margin-left: 15px; width: 300px; height: 310px; }
+			#add-block { position: absolute; }
+		}
+
+
+	</style>
+	<!--[if IE]>
+	<![endif]-->
+	<!--[if lte IE 7]>
+	<![endif]-->
+	
+	
+</head>
+<body>
+	<div class="article">
+
+		<div id="add-block-placer" class="add"></div>
+
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vehicula lacus id tellus pulvinar vel sollicitudin ipsum luctus.</p>
+
+		<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc tempor pretium eros egestas posuere. Curabitur cursus tortor eget risus pretium non fermentum nulla molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat velit eget tellus dapibus ut tempus justo scelerisque. Aliquam sit amet ligula ac urna dapibus cursus ac in libero. Morbi felis nisi, pulvinar eu rhoncus vel, cursus in felis. Proin ligula nisi, dapibus et fermentum at, porta id lectus.</p>
+
+		<p>Etiam consequat dapibus nibh, non vulputate nisl consequat non. Sed eget mauris non nunc sagittis vehicula ac vitae lacus. Aenean eu leo ut nisl consectetur pellentesque. Ut sed odio ante. Praesent ultricies lacinia risus nec eleifend. Maecenas et lacinia leo. Fusce dignissim tristique ipsum, ut cursus sem euismod vitae. Phasellus mauris odio, semper quis aliquam ac, tincidunt suscipit tortor. Praesent vestibulum porta orci at ultricies.</p>
+
+		<p>Cras porttitor, enim in gravida ullamcorper, velit risus rutrum dolor, non dignissim est massa eu augue. In elit ligula, pretium a lacinia quis, egestas quis sem. Vivamus ac consequat sapien. Sed convallis laoreet massa, eu faucibus ipsum venenatis id. Nulla facilisi. Pellentesque dapibus, elit nec varius eleifend, lectus metus lacinia arcu, eu porta augue velit egestas purus. Vivamus eget nunc vel justo porttitor scelerisque ut in nunc. Vestibulum ipsum urna, tincidunt vitae bibendum nec, tempor sed odio. Praesent ut purus sit amet purus euismod sollicitudin.</p>
+
+		<!-- START: PBS 300x250 ad -->
+		<div id="add-block" class="add">
+	
+			<h4>Support provided by:</h4>
+
+			<!-- begin ad tag (tile=1) -->
+			<script language="JavaScript" src="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=1?" type="text/javascript"></script>
+			<noscript><a href="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=123456789?" target="_blank"><img src="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=123456789?" width="300" height="250" border="0" alt=""></a></noscript>
+			
+		</div>		
+		<!-- END: PBS 300x250 ad -->
+ 
+	</div>
+
+	<script type="text/javascript">
+
+		window.onload = function() { 
+			//preparePlaceholder();
+			hopAddBlock(); 		
+		};
+		window.onresize = function() { hopAddBlock(); };
+
+
+		function findPos(obj) {
+			var curleft = curtop = 0;
+			if (obj.offsetParent) {
+				do {
+					curleft += obj.offsetLeft;
+					curtop += obj.offsetTop;
+				} while (obj = obj.offsetParent);
+
+			return {'left': curleft, 'top': curtop};
+			}
+		}
+
+		function preparePlaceholder()  {
+	    	var placeholder = document.getElementById('add-block-placer'),
+	    		addBlock = document.getElementById('add-block');
+
+			placeholder.style.height = addBlock.offsetHeight + 'px';
+			placeholder.style.width = addBlock.offsetWidth + 'px';
+
+		}
+		
+		function hopAddBlock() {
+
+	    	var placeholder = document.getElementById('add-block-placer'),
+	    		addBlock = document.getElementById('add-block'),
+	    		curStyle = document.defaultView.getComputedStyle(placeholder, null).getPropertyValue('display'),
+	    		pTop,
+	    		pLeft;
+				
+	    	if (curStyle == 'block') {
+	    		curPos = findPos(placeholder);
+	    		pLeft = curPos.left;
+	    		pTop = curPos.top;
+	    		addBlock.style.top = pTop + 'px';
+	    		addBlock.style.left = pLeft + 'px';
+	    	}
+
+		}
+
+	</script>
+</body>
+</html>
