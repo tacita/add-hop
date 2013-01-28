@@ -8,19 +8,21 @@
 
 	<title>add block playground</title>
 
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 
 	<style type="text/css">
 		.article { max-width: 800px; margin: 0 auto; }
 		#add-block { position: static; width: 300px; height: 310px; margin: 0 auto; opacity: .8; }
-		#add-block-placer { display: none; width:0; height: 0; background: grey; }
+		#add-block-placer { display: none; width:0; height: 0; }
 
 		/* tablet-ish and up */
 		@media only screen and (min-width: 768px) {
 			#add-block-placer { display: inline; float: right; margin-left: 15px; width: 300px; height: 310px; }
-			#add-block { position: absolute; }
+			#add-block { position: absolute; z-index: 1;}
 		}
 
-	</style>	
+	</style>
 	
 </head>
 
@@ -32,9 +34,9 @@
 
 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vehicula lacus id tellus pulvinar vel sollicitudin ipsum luctus.</p>
 
-		<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc tempor pretium eros egestas posuere. Curabitur cursus tortor eget risus pretium non fermentum nulla molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat velit eget tellus dapibus ut tempus justo scelerisque. Aliquam sit amet ligula ac urna dapibus cursus ac in libero. Morbi felis nisi, pulvinar eu rhoncus vel, cursus in felis. Proin ligula nisi, dapibus et fermentum at, porta id lectus.</p>
-
 		<p>Etiam consequat dapibus nibh, non vulputate nisl consequat non. Sed eget mauris non nunc sagittis vehicula ac vitae lacus. Aenean eu leo ut nisl consectetur pellentesque. Ut sed odio ante. Praesent ultricies lacinia risus nec eleifend. Maecenas et lacinia leo. Fusce dignissim tristique ipsum, ut cursus sem euismod vitae. Phasellus mauris odio, semper quis aliquam ac, tincidunt suscipit tortor. Praesent vestibulum porta orci at ultricies.</p>
+
+		<blockquote>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc tempor pretium eros egestas posuere. Curabitur cursus tortor eget risus pretium non fermentum nulla molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat.  Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat velit eget tellus dapibus ut tempus justo scelerisque. Aliquam sit amet ligula ac urna dapibus cursus ac in libero. Morbi felis nisi, pulvinar eu rhoncus vel, cursus in felis. Proin ligula nisi, dapibus et fermentum at, porta id lectus.</blockquote>
 
 		<p>Cras porttitor, enim in gravida ullamcorper, velit risus rutrum dolor, non dignissim est massa eu augue. In elit ligula, pretium a lacinia quis, egestas quis sem. Vivamus ac consequat sapien. Sed convallis laoreet massa, eu faucibus ipsum venenatis id. Nulla facilisi. Pellentesque dapibus, elit nec varius eleifend, lectus metus lacinia arcu, eu porta augue velit egestas purus. Vivamus eget nunc vel justo porttitor scelerisque ut in nunc. Vestibulum ipsum urna, tincidunt vitae bibendum nec, tempor sed odio. Praesent ut purus sit amet purus euismod sollicitudin.</p>
 
@@ -52,14 +54,16 @@
  
 	</div>
 
+
 	<script type="text/javascript">
 
 		window.onload = function() { 
 			//preparePlaceholder(); // returned size calculation was wider than expected, abandoning approach for fixed dimensions in css
-			hopAddBlock(); 
+			hopAddBlock();
 		};
-		window.onresize = function() { hopAddBlock(); };
+		window.onresize = function() { hopAddBlock(); }; // todo: throttle
 
+		//$(window).resize( $.throttle(1000, hopAddBlock) );  // todo: not syncing right
 
 		// findPos() thank you http://www.quirksmode.org/js/findpos.html
 		function findPos(obj) {
@@ -83,16 +87,34 @@
 
 		}
 		
+		function getRenderedStyle(elt, property) {
+
+			// modern js friendly
+			if (document.defaultView && document.defaultView.getComputedStyle) {
+				return document.defaultView.getComputedStyle(elt, null)[property];
+
+			// oldschool/IE
+			} else if (elt.currentStyle) {
+				return elt.currentStyle[property];
+
+			// inline style
+			} else {
+				return elt.style[property];
+			}
+
+		}
+
 		// If the placeholder is currently visible and taking up space (via styling within @media query), match the add block's position to the placeholder's position.
 		function hopAddBlock() {
 
 	    	var placeholder = document.getElementById('add-block-placer'),
 	    		addBlock = document.getElementById('add-block'),
-	    		curStyle = document.defaultView.getComputedStyle(placeholder, null).getPropertyValue('display'), // TODO: not cross-browser friendly
+	    		curStyle = getRenderedStyle(placeholder, 'display'),
 	    		pTop,
 	    		pLeft;
-				
-	    	if (curStyle == 'block') {
+
+			//console.log('currentStyle: ' + curStyle);
+	    	if (curStyle != 'none') {
 	    		curPos = findPos(placeholder);
 	    		pLeft = curPos.left;
 	    		pTop = curPos.top;
