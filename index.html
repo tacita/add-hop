@@ -65,7 +65,10 @@
 				CSS requirements for add-hop functionality: 
 					- set matching width and height on empty placeholder element and add-block container. ex: .add-container { width: 300px; height: 310px; }
 					- for default add-block display, style placeholder with: { display: none; }
-					- for shifted add-block display (within @media rules), style placeholder with: { display: inline; ...				
+					- for shifted add-block display (within @media rules), style placeholder with: { display: inline; ...
+				Todo:
+					- abstract out add block and placeholder ids, use data- to relate elements
+					- throttle onresize event listener (initial attempt with jquery $.throttle produced poor results)				
 			*/
 
 			var win = ah.window,
