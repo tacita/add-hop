@@ -9,17 +9,18 @@
 	<title>add block playground</title>
 
 	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-	<!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script-->
 
 	<style type="text/css">
 		.article { max-width: 800px; margin: 0 auto; }
-		#add-block { position: static; width: 300px; height: 310px; margin: 0 auto; opacity: .8; }
-		#add-block-placer { display: none; width:0; height: 0; }
 
-		/* tablet-ish and up */
+		.add-container { width: 300px; height: 310px; } /* set all elements that need to be add-block container size to same size */
+		#add-block { position: static; margin: 0 auto; }
+		#add-block-placer { display: none; }
+
+		/* tablet-ish and up for javascript enabled browsers */
 		@media only screen and (min-width: 768px) {
-			#add-block-placer { display: inline; float: right; margin-left: 15px; width: 300px; height: 310px; }
-			#add-block { position: absolute; z-index: 1;}
+			.js #add-block-placer { display: inline; float: right; margin-left: 15px; }
+			.js #add-block { position: absolute; z-index: 1;}
 		}
 
 	</style>
@@ -30,7 +31,7 @@
 
 	<div class="article">
 
-		<div id="add-block-placer"><!-- For wider screen viewing experience this placeholder is given a height and width. Its position is then used for relocating add block. --></div>
+		<div id="add-block-placer" class="add-container"><!-- For wider screen viewing experience this placeholder is given a height and width. Its position is then used for relocating add block. --></div>
 
 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vehicula lacus id tellus pulvinar vel sollicitudin ipsum luctus.</p>
 
@@ -41,7 +42,7 @@
 		<p>Cras porttitor, enim in gravida ullamcorper, velit risus rutrum dolor, non dignissim est massa eu augue. In elit ligula, pretium a lacinia quis, egestas quis sem. Vivamus ac consequat sapien. Sed convallis laoreet massa, eu faucibus ipsum venenatis id. Nulla facilisi. Pellentesque dapibus, elit nec varius eleifend, lectus metus lacinia arcu, eu porta augue velit egestas purus. Vivamus eget nunc vel justo porttitor scelerisque ut in nunc. Vestibulum ipsum urna, tincidunt vitae bibendum nec, tempor sed odio. Praesent ut purus sit amet purus euismod sollicitudin.</p>
 
 		<!-- START: PBS 300x250 ad -->
-		<div id="add-block">
+		<div id="add-block" class="add-container">
 	
 			<h4>Support provided by:</h4>
 
@@ -58,53 +59,59 @@
 	<script type="text/javascript">
 
 		window.onload = function() { 
-			//preparePlaceholder(); // returned size calculation was wider than expected, abandoning approach for fixed dimensions in css
+			document.body.className+=' js'; // indicate js support
 			hopAddBlock();
 		};
 		window.onresize = function() { hopAddBlock(); }; // todo: throttle
 
-		//$(window).resize( $.throttle(1000, hopAddBlock) );  // todo: not syncing right
 
-		// findPos() thank you http://www.quirksmode.org/js/findpos.html
-		function findPos(obj) {
+		/*
+			findPos: Return position (top and left) of the given object in relation to the top left corner of the viewport. (Adapted from http://www.quirksmode.org/js/findpos.html)
+			arguments:
+				elt: a dom element
+
+		*/
+		function findPos(elt) {
 			var curleft = curtop = 0;
-			if (obj.offsetParent) {
+			if (elt.offsetParent) {
 				do {
-					curleft += obj.offsetLeft;
-					curtop += obj.offsetTop;
-				} while (obj = obj.offsetParent);
+					curleft += elt.offsetLeft;
+					curtop += elt.offsetTop;
+				} while (elt = elt.offsetParent);
 
 			return {'left': curleft, 'top': curtop};
 			}
 		}
-
-		function preparePlaceholder()  {
-	    	var placeholder = document.getElementById('add-block-placer'),
-	    		addBlock = document.getElementById('add-block');
-
-			placeholder.style.height = addBlock.offsetHeight + 'px';
-			placeholder.style.width = addBlock.offsetWidth + 'px';
-
-		}
 		
+
+		/*
+			getRenderedStyle: Return the value the given property is set to on the given element
+			arguments: 
+				elt: a dom element
+				property: a string of the css property name to retrieve
+		*/
 		function getRenderedStyle(elt, property) {
 
-			// modern js friendly
+			// modern js friendly browsers
 			if (document.defaultView && document.defaultView.getComputedStyle) {
 				return document.defaultView.getComputedStyle(elt, null)[property];
 
-			// oldschool/IE
+			// oldschool/IE browsers
 			} else if (elt.currentStyle) {
 				return elt.currentStyle[property];
 
-			// inline style
-			} else {
-				return elt.style[property];
 			}
-
 		}
 
-		// If the placeholder is currently visible and taking up space (via styling within @media query), match the add block's position to the placeholder's position.
+
+		/* 
+			hopAddBlock: If the placeholder is currently visible and taking up space (via styling within @media query), match the add block's position to the placeholder's position.
+
+			CSS requirements: 
+				- set matching width and height on empty placeholder element and add-block container. ex: .add-container { width: 300px; height: 310px; }
+				- for default add-block position, style placeholder with: { display: none; }
+				- for shifted add-block position, style placeholder with: { display: inline; ...				
+		*/
 		function hopAddBlock() {
 
 	    	var placeholder = document.getElementById('add-block-placer'),
@@ -113,11 +120,14 @@
 	    		pTop,
 	    		pLeft;
 
-			//console.log('currentStyle: ' + curStyle);
+	    	// if the placeholder is being rendered, move the addblock to where the placeholder is
 	    	if (curStyle != 'none') {
+	    		// get placeholder position
 	    		curPos = findPos(placeholder);
 	    		pLeft = curPos.left;
 	    		pTop = curPos.top;
+
+	    		// move add-block there
 	    		addBlock.style.top = pTop + 'px';
 	    		addBlock.style.left = pLeft + 'px';
 	    	}
