@@ -58,81 +58,68 @@
 
 	<script type="text/javascript">
 
-		window.onload = function() { 
-			document.body.className+=' js'; // indicate js support
-			hopAddBlock();
-		};
-		window.onresize = function() { hopAddBlock(); }; // todo: throttle
+		(function(ah){
+			/* 	
+				Purpose:
+					Move where add-block is being displayed for different viewports. Uses a placeholder to absolutely position an add-block in certian viewports.
+				CSS requirements for add-hop functionality: 
+					- set matching width and height on empty placeholder element and add-block container. ex: .add-container { width: 300px; height: 310px; }
+					- for default add-block display, style placeholder with: { display: none; }
+					- for shifted add-block display (within @media rules), style placeholder with: { display: inline; ...				
+			*/
 
+			var win = ah.window,
+				doc = ah.document;
 
-		/*
-			findPos: Return position (top and left) of the given object in relation to the top left corner of the viewport. (Adapted from http://www.quirksmode.org/js/findpos.html)
-			arguments:
-				elt: a dom element
+			win.onload = function() {
+				if ((' ' + doc.body.className + ' ').indexOf(' js ') == -1) { doc.body.className+=' js'; } // indicate js support, if not already indicated
+				hopAddBlock();
+			};
+			win.onresize = function() { hopAddBlock(); }; // todo: throttle
 
-		*/
-		function findPos(elt) {
-			var curleft = curtop = 0;
-			if (elt.offsetParent) {
-				do {
-					curleft += elt.offsetLeft;
-					curtop += elt.offsetTop;
-				} while (elt = elt.offsetParent);
-
-			return {'left': curleft, 'top': curtop};
+			// Return position of the given object in relation to viewport. (Adapted from http://www.quirksmode.org/js/findpos.html)
+			function findPos( elt ) {
+				var curleft = curtop = 0;
+				if ( elt.offsetParent ) {
+					do {
+						curleft += elt.offsetLeft;
+						curtop += elt.offsetTop;
+					} while ( elt = elt.offsetParent );
+				return {'left': curleft, 'top': curtop};
+				}
 			}
-		}
-		
 
-		/*
-			getRenderedStyle: Return the value the given property is set to on the given element
-			arguments: 
-				elt: a dom element
-				property: a string of the css property name to retrieve
-		*/
-		function getRenderedStyle(elt, property) {
-
-			// modern js friendly browsers
-			if (document.defaultView && document.defaultView.getComputedStyle) {
-				return document.defaultView.getComputedStyle(elt, null)[property];
-
-			// oldschool/IE browsers
-			} else if (elt.currentStyle) {
-				return elt.currentStyle[property];
-
+			// Return the value the given property is set to on the given element
+			function getRenderedStyle( elt, prop ) {
+				// modern js friendly browsers
+				if ( doc.defaultView && doc.defaultView.getComputedStyle ) {
+					return doc.defaultView.getComputedStyle( elt, null )[prop];
+				// oldschool/IE browsers
+				} else if ( elt.currentStyle ) {
+					return elt.currentStyle[prop];
+				}
 			}
-		}
 
+			// If the placeholder is currently visible, match the add block's position to the placeholder's position.
+			function hopAddBlock() {
+		    	var addBlock = doc.getElementById( 'add-block' ),
+		    		placeholder = doc.getElementById( 'add-block-placer' ),
+		    		curStyle = getRenderedStyle( placeholder, 'display' ),
+		    		pTop,
+		    		pLeft;
 
-		/* 
-			hopAddBlock: If the placeholder is currently visible and taking up space (via styling within @media query), match the add block's position to the placeholder's position.
+		    	if ( curStyle != 'none' ) {
+		    		// get placeholder position
+		    		pos = findPos( placeholder );
+		    		pLeft = pos.left;
+		    		pTop = pos.top;
 
-			CSS requirements: 
-				- set matching width and height on empty placeholder element and add-block container. ex: .add-container { width: 300px; height: 310px; }
-				- for default add-block position, style placeholder with: { display: none; }
-				- for shifted add-block position, style placeholder with: { display: inline; ...				
-		*/
-		function hopAddBlock() {
-
-	    	var placeholder = document.getElementById('add-block-placer'),
-	    		addBlock = document.getElementById('add-block'),
-	    		curStyle = getRenderedStyle(placeholder, 'display'),
-	    		pTop,
-	    		pLeft;
-
-	    	// if the placeholder is being rendered, move the addblock to where the placeholder is
-	    	if (curStyle != 'none') {
-	    		// get placeholder position
-	    		curPos = findPos(placeholder);
-	    		pLeft = curPos.left;
-	    		pTop = curPos.top;
-
-	    		// move add-block there
-	    		addBlock.style.top = pTop + 'px';
-	    		addBlock.style.left = pLeft + 'px';
-	    	}
-
-		}
+		    		// move add-block there
+		    		addBlock.style.top = pTop + 'px';
+		    		addBlock.style.left = pLeft + 'px';
+		    	}
+			}
+		})( this );
 
 	</script>
 </body>
