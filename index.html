@@ -96,7 +96,11 @@
 			// If the placeholder is currently visible, match the add block's position to the placeholder's position.
 			function hopAddBlock( addBlockId ) {
 
-				if (!placeholder) { return; } // no where to move it - bail
+		        // bail if no placeholder is found
+		        if (!placeholder) { 
+		            addBlock.style.position = 'static';
+		            return;
+		        }
 
 		    	var curStyle = (placeholder) ? getRenderedStyle( placeholder, 'display' ) : null,
 		    		pTop,
