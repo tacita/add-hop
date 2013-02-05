@@ -69,20 +69,53 @@
 					- for default add-block display, style placeholder with: { display: none; }
 					- for shifted add-block display (within @media rules), style placeholder with: { display: inline; ...
 				Todo:
-					- abstract out add block and placeholder ids, use data- to relate elements
+					- make add block id configurable
+					- allow for multiple placeholders
+					- allow for multiple add-blocks
 					- throttle onresize event listener (initial attempt with jquery $.throttle produced poor results)
-					- on load find first parent with positioning and caluculate position relative to that parent, otherwise position relative to screen
+					- allow for parents with positioning: on load find first parent with positioning and caluculate position relative to that parent, otherwise position relative to screen
 			*/
 
 			var win = ah.window,
 				doc = ah.document,
-				addBlockId = 'add-block';
+				addBlockId = 'add-block',
+				addBlock = doc.getElementById( addBlockId ),
+	    		placeholderId = addBlock.getAttribute( 'data-placeholder' ),
+	    		placeholder = doc.getElementById( placeholderId );
 
+			
 			win.onload = function() {
-				if ((' ' + doc.body.className + ' ').indexOf(' js ') == -1) { doc.body.className+=' js'; } // indicate js support, if not already indicated
+				// indicate js support, if not already indicated
+				if ((' ' + doc.body.className + ' ').indexOf(' js ') == -1) { doc.body.className+=' js'; }
+
+				// trigger add hopping functionality on page load (& window resize)
 				hopAddBlock( addBlockId );
 			};
 			win.onresize = function() { hopAddBlock( addBlockId ); }; // todo: throttle
+
+			// If the placeholder is currently visible, match the add block's position to the placeholder's position.
+			function hopAddBlock( addBlockId ) {
+
+				if (!placeholder) { return; } // no where to move it - bail
+
+		    	var curStyle = (placeholder) ? getRenderedStyle( placeholder, 'display' ) : null,
+		    		pTop,
+		    		pLeft;
+
+		    	if ( curStyle != 'none' && placeholder) {
+		    		// get placeholder position
+		    		pos = findPos( placeholder );
+		    		pLeft = pos.left;
+		    		pTop = pos.top;
+
+		    		// move add-block there
+		    		addBlock.style.top = pTop + 'px';
+		    		addBlock.style.left = pLeft + 'px';
+
+		    	} else if (typeof console == "object") {
+	    			console.warn('There is a problem with the data-placeholder attribute on the add block finding a match with an id of a placeholders. [add-hop]');
+	    		}
+    		}
 
 			// Return position of the given object in relation to viewport. (Adapted from http://www.quirksmode.org/js/findpos.html)
 			function findPos( elt ) {
@@ -107,29 +140,6 @@
 				}
 			}
 
-			// If the placeholder is currently visible, match the add block's position to the placeholder's position.
-			function hopAddBlock( addBlockId ) {
-		    	var addBlock = doc.getElementById( addBlockId ),
-		    		placeholderId = addBlock.getAttribute( 'data-placeholder' ),
-		    		placeholder = doc.getElementById( placeholderId ),
-		    		curStyle = (placeholder) ? getRenderedStyle( placeholder, 'display' ) : null,
-		    		pTop,
-		    		pLeft;
-
-		    	if ( curStyle != 'none' && placeholder) {
-		    		// get placeholder position
-		    		pos = findPos( placeholder );
-		    		pLeft = pos.left;
-		    		pTop = pos.top;
-
-		    		// move add-block there
-		    		addBlock.style.top = pTop + 'px';
-		    		addBlock.style.left = pLeft + 'px';
-
-		    	} else if (typeof console == "object") {
-	    			console.warn('There is a problem with the data-placeholder attribute on the add block finding a match with an id of a placeholders. [add-hop]');
-	    		}
-    		}
 		})( this );
 
 	</script>
