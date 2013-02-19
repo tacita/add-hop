@@ -11,7 +11,8 @@
 	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 
 	<style type="text/css">
-		.article { max-width: 800px; margin: 0 auto; }
+
+		.article { position: absolute; left: 200px; max-width: 800px; margin: 0 auto; }
 
 		.add-container { width: 300px; height: 310px; } /* set all elements that need to be add-block container size to same size */
 		#add-block { position: static; margin: 0 auto; }
@@ -28,7 +29,6 @@
 </head>
 
 <body>
-
 	<div class="article">
 
 		<div id="add-block-placer" class="add-container"><!-- For wider screen viewing experience this placeholder is given a height and width. Its position is then used for relocating add block. --></div>
@@ -64,16 +64,14 @@
 					Move where add-block is being displayed for different viewports. Uses a placeholder to absolutely position an add-block in certian viewports.
 				CSS requirements for add-hop functionality:
 					- add-block element needs data-placeholder attribute set to id of its target placeholder
-					- add-block cannot have a positioned parent
-					- set matching width and height on empty placeholder element and add-block container. ex: .add-container { width: 300px; height: 310px; }
+					- set matching width and height on empty placeholder element and actual add-block
 					- for default add-block display, style placeholder with: { display: none; }
 					- for shifted add-block display (within @media rules), style placeholder with: { display: inline; ...
 				Todo:
 					- make add block id configurable
 					- allow for multiple placeholders
 					- allow for multiple add-blocks
-					- throttle onresize event listener (initial attempt with jquery $.throttle produced poor results)
-					- allow for parents with positioning: on load find first parent with positioning and caluculate position relative to that parent, otherwise position relative to screen
+					- throttle onresize event listener
 			*/
 
 			var win = ah.window,
@@ -84,13 +82,15 @@
 	    		placeholder = doc.getElementById( placeholderId );
 
 			
-			win.onload = function() {
+            win.addEventListener('load', function() {
 				// indicate js support, if not already indicated
 				if ((' ' + doc.body.className + ' ').indexOf(' js ') == -1) { doc.body.className+=' js'; }
 
 				// trigger add hopping functionality on page load (& window resize)
 				hopAddBlock( addBlockId );
-			};
+		    }, false);
+
+		    // trigger add hopping functionality on page resize
 			win.onresize = function() { hopAddBlock( addBlockId ); }; // todo: throttle
 
 			// If the placeholder is currently visible, match the add block's position to the placeholder's position.
@@ -117,25 +117,34 @@
 		    		addBlock.style.left = pLeft + 'px';
 
 		    	} else if (typeof console == "object") {
-	    			console.warn('There is a problem with the data-placeholder attribute on the add block finding a match with an id of a placeholders. [add-hop]');
+	    			console.warn('There may be a problem with the data-placeholder attribute on the add block finding a match with an id of a placeholders. [add-hop]');
 	    		}
     		}
 
 			// Return position of the given object in relation to viewport. (Adapted from http://www.quirksmode.org/js/findpos.html)
 			function findPos( elt ) {
-				var curleft = curtop = 0;
+				var curLeft = curTop = diffLeft = diffTop = 0,
+					parentPos = '';
+
 				if ( elt.offsetParent ) {
 					do {
-						curleft += elt.offsetLeft;
-						curtop += elt.offsetTop;
+						curLeft += elt.offsetLeft;
+						curTop += elt.offsetTop;
+
+						// adjust for absolutely and relatively positioned elements
+						parentPos = getRenderedStyle( elt, 'position');
+						if( parentPos == 'absolute' || parentPos == 'relative') {
+	                        diffTop += elt.offsetTop;
+	                        diffLeft += elt.offsetLeft;
+	                    }
 					} while ( elt = elt.offsetParent );
-				return {'left': curleft, 'top': curtop};
+				return {'left': curLeft - diffLeft, 'top': curTop - diffTop};
 				}
 			}
 
 			// Return the value the given property is set to on the given element
 			function getRenderedStyle( elt, prop ) {
-				// modern js friendly browsers
+				// modern js-friendly browsers
 				if ( doc.defaultView && doc.defaultView.getComputedStyle ) {
 					return doc.defaultView.getComputedStyle( elt, null )[prop];
 				// oldschool/IE browsers
