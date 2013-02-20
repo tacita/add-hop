@@ -11,9 +11,13 @@
 	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 
 	<style type="text/css">
+		/* uncomment to play with positioning of ancestors */
+		/* 
+		.position-test-wrap { position: relative; top: 150px; left: 50px; }
+		.article { position: absolute; top: -100px; left: 100px;  }
+		*/
 
-		.article { position: absolute; left: 200px; max-width: 800px; margin: 0 auto; }
-
+		.article { max-width: 800px; margin: 0 auto; }
 		.add-container { width: 300px; height: 310px; } /* set all elements that need to be add-block container size to same size */
 		#add-block { position: static; margin: 0 auto; }
 		#add-block-placer { display: none; }
@@ -29,39 +33,41 @@
 </head>
 
 <body>
-	<div class="article">
+	<div class="position-test-wrap">
+		<div class="article">
 
-		<div id="add-block-placer" class="add-container"><!-- For wider screen viewing experience this placeholder is given a height and width. Its position is then used for relocating add block. --></div>
+			<div id="add-block-placer" class="add-container"><!-- For wider screen viewing experience this placeholder is given a height and width. Its position is then used for relocating add block. --></div>
 
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vehicula lacus id tellus pulvinar vel sollicitudin ipsum luctus.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vehicula lacus id tellus pulvinar vel sollicitudin ipsum luctus.</p>
 
-		<p>Etiam consequat dapibus nibh, non vulputate nisl consequat non. Sed eget mauris non nunc sagittis vehicula ac vitae lacus. Aenean eu leo ut nisl consectetur pellentesque. Ut sed odio ante. Praesent ultricies lacinia risus nec eleifend. Maecenas et lacinia leo. Fusce dignissim tristique ipsum, ut cursus sem euismod vitae. Phasellus mauris odio, semper quis aliquam ac, tincidunt suscipit tortor. Praesent vestibulum porta orci at ultricies.</p>
+			<p>Etiam consequat dapibus nibh, non vulputate nisl consequat non. Sed eget mauris non nunc sagittis vehicula ac vitae lacus. Aenean eu leo ut nisl consectetur pellentesque. Ut sed odio ante. Praesent ultricies lacinia risus nec eleifend. Maecenas et lacinia leo. Fusce dignissim tristique ipsum, ut cursus sem euismod vitae. Phasellus mauris odio, semper quis aliquam ac, tincidunt suscipit tortor. Praesent vestibulum porta orci at ultricies.</p>
 
-		<blockquote>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc tempor pretium eros egestas posuere. Curabitur cursus tortor eget risus pretium non fermentum nulla molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat.  Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat velit eget tellus dapibus ut tempus justo scelerisque. Aliquam sit amet ligula ac urna dapibus cursus ac in libero. Morbi felis nisi, pulvinar eu rhoncus vel, cursus in felis. Proin ligula nisi, dapibus et fermentum at, porta id lectus.</blockquote>
+			<blockquote>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc tempor pretium eros egestas posuere. Curabitur cursus tortor eget risus pretium non fermentum nulla molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat.  Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat molestie. Nulla facilisi. Fusce et mauris vitae leo rhoncus placerat. Donec egestas ultricies lacinia. Nullam placerat velit eget tellus dapibus ut tempus justo scelerisque. Aliquam sit amet ligula ac urna dapibus cursus ac in libero. Morbi felis nisi, pulvinar eu rhoncus vel, cursus in felis. Proin ligula nisi, dapibus et fermentum at, porta id lectus.</blockquote>
 
-		<p>Cras porttitor, enim in gravida ullamcorper, velit risus rutrum dolor, non dignissim est massa eu augue. In elit ligula, pretium a lacinia quis, egestas quis sem. Vivamus ac consequat sapien. Sed convallis laoreet massa, eu faucibus ipsum venenatis id. Nulla facilisi. Pellentesque dapibus, elit nec varius eleifend, lectus metus lacinia arcu, eu porta augue velit egestas purus. Vivamus eget nunc vel justo porttitor scelerisque ut in nunc. Vestibulum ipsum urna, tincidunt vitae bibendum nec, tempor sed odio. Praesent ut purus sit amet purus euismod sollicitudin.</p>
+			<p>Cras porttitor, enim in gravida ullamcorper, velit risus rutrum dolor, non dignissim est massa eu augue. In elit ligula, pretium a lacinia quis, egestas quis sem. Vivamus ac consequat sapien. Sed convallis laoreet massa, eu faucibus ipsum venenatis id. Nulla facilisi. Pellentesque dapibus, elit nec varius eleifend, lectus metus lacinia arcu, eu porta augue velit egestas purus. Vivamus eget nunc vel justo porttitor scelerisque ut in nunc. Vestibulum ipsum urna, tincidunt vitae bibendum nec, tempor sed odio. Praesent ut purus sit amet purus euismod sollicitudin.</p>
 
-		<!-- START: PBS 300x250 ad -->
-		<div id="add-block" class="add-container" data-placeholder="add-block-placer">
-	
-			<h4>Support provided by:</h4>
+			<!-- START: PBS 300x250 ad -->
+			<div id="add-block" class="add-container" data-placeholder="add-block-placer">
+		
+				<h4>Support provided by:</h4>
 
-			<!-- begin ad tag (tile=1) -->
-			<script language="JavaScript" src="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=1?" type="text/javascript"></script>
-			<noscript><a href="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=123456789?" target="_blank"><img src="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=123456789?" width="300" height="250" border="0" alt=""></a></noscript>
-			
-		</div>		
-		<!-- END: PBS 300x250 ad -->
- 
+				<!-- begin ad tag (tile=1) -->
+				<script language="JavaScript" src="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=1?" type="text/javascript"></script>
+				<noscript><a href="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=123456789?" target="_blank"><img src="http://ad.doubleclick.net/adj/n6735.PBS/science_general_NOVA;tile=1;nova-topic=evolution;sz=300x250;ord=123456789?" width="300" height="250" border="0" alt=""></a></noscript>
+				
+			</div>		
+			<!-- END: PBS 300x250 ad -->
+	 
+		</div>
 	</div>
-
 
 	<script type="text/javascript">
 
 		(function(ah){
 			/*
 				Purpose:
-					Move where add-block is being displayed for different viewports. Uses a placeholder to absolutely position an add-block in certian viewports.
+					Move where add-block is being displayed for different viewports without re-rendering or loading the add-block. 
+					Uses a placeholder to absolutely position the add-block in certain viewports.
 				CSS requirements for add-hop functionality:
 					- add-block element needs data-placeholder attribute set to id of its target placeholder
 					- set matching width and height on empty placeholder element and actual add-block
@@ -74,47 +80,56 @@
 					- throttle onresize event listener
 			*/
 
-			var win = ah.window,
-				doc = ah.document,
-				addBlockId = 'add-block',
-				addBlock = doc.getElementById( addBlockId ),
-	    		placeholderId = addBlock.getAttribute( 'data-placeholder' ),
-	    		placeholder = doc.getElementById( placeholderId );
+			var _win = ah.window,
+				_doc = ah.document,
+				_addBlockId = 'add-block',
+				_addBlock = _doc.getElementById( _addBlockId ),
+	    		_placeholderId = _addBlock.getAttribute( 'data-placeholder' ),
+	    		_placeholder = _doc.getElementById( _placeholderId ),
+	    		_ancestorOffsets,
+	    		_diffLeft = _diffTop = 0;
 
 			
-            win.addEventListener('load', function() {
+            _win.addEventListener('load', function() {
 				// indicate js support, if not already indicated
-				if ((' ' + doc.body.className + ' ').indexOf(' js ') == -1) { doc.body.className+=' js'; }
+				if ((' ' + _doc.body.className + ' ').indexOf(' js ') == -1) { _doc.body.className+=' js'; }
 
-				// trigger add hopping functionality on page load (& window resize)
-				hopAddBlock( addBlockId );
+				// calculate offsets of positioned ancestors one time
+				_ancestorOffsets = findOffset( _placeholder );
+				_diffLeft = _ancestorOffsets.diffLeft;
+				_diffTop = _ancestorOffsets.diffTop;
+
+				// trigger add hopping functionality on page load
+				hopAddBlock( _addBlockId );
 		    }, false);
 
-		    // trigger add hopping functionality on page resize
-			win.onresize = function() { hopAddBlock( addBlockId ); }; // todo: throttle
 
-			// If the placeholder is currently visible, match the add block's position to the placeholder's position.
-			function hopAddBlock( addBlockId ) {
+		    // trigger add hopping functionality on page resize
+			_win.onresize = function() { hopAddBlock( _addBlockId ); };
+
+
+			// Match the add block's position to the placeholder's position (if the placeholder is currently visible)
+			function hopAddBlock( _addBlockId ) {
 
 		        // bail if no placeholder is found
-		        if (!placeholder) { 
-		            addBlock.style.position = 'static';
+		        if (!_placeholder) { 
+		            _addBlock.style.position = 'static';
 		            return;
 		        }
 
-		    	var curStyle = (placeholder) ? getRenderedStyle( placeholder, 'display' ) : null,
+		    	var curStyle = (_placeholder) ? getRenderedStyle( _placeholder, 'display' ) : null,
 		    		pTop,
 		    		pLeft;
 
-		    	if ( curStyle != 'none' && placeholder) {
+		    	if ( curStyle != 'none' && _placeholder) {
 		    		// get placeholder position
-		    		pos = findPos( placeholder );
+		    		pos = findPos( _placeholder, _diffLeft, _diffTop );
 		    		pLeft = pos.left;
 		    		pTop = pos.top;
 
 		    		// move add-block there
-		    		addBlock.style.top = pTop + 'px';
-		    		addBlock.style.left = pLeft + 'px';
+		    		_addBlock.style.top = pTop + 'px';
+		    		_addBlock.style.left = pLeft + 'px';
 
 		    	} else if (typeof console == "object") {
 	    			console.warn('There may be a problem with the data-placeholder attribute on the add block finding a match with an id of a placeholders. [add-hop]');
@@ -122,31 +137,46 @@
     		}
 
 			// Return position of the given object in relation to viewport. (Adapted from http://www.quirksmode.org/js/findpos.html)
-			function findPos( elt ) {
-				var curLeft = curTop = diffLeft = diffTop = 0,
-					parentPos = '';
+			function findPos( elt, diffLeft, diffTop ) {
+				var curLeft = curTop = 0;
 
+				// set defaults if no offsets for positioned ancestors were passed in
+				diffLeft = diffLeft || 0;
+				diffTop = diffTop || 0;
+
+				// loop through ancestors of element
 				if ( elt.offsetParent ) {
 					do {
 						curLeft += elt.offsetLeft;
 						curTop += elt.offsetTop;
 
-						// adjust for absolutely and relatively positioned elements
-						parentPos = getRenderedStyle( elt, 'position');
-						if( parentPos == 'absolute' || parentPos == 'relative') {
+					} while ( elt = elt.offsetParent );
+				return {'left': curLeft - diffLeft, 'top': curTop - diffTop};
+				}
+			}
+
+			// Return sum of offsets of absolutely or relatively positioned ancestors to the given element
+			function findOffset( elt ) {
+				var curLeft = curTop = diffLeft = diffTop = 0,
+					parentPositioning = '';
+
+				if ( elt.offsetParent ) {
+					do {
+						parentPositioning = getRenderedStyle( elt, 'position');
+						if( parentPositioning == 'absolute' || parentPositioning == 'relative') {
 	                        diffTop += elt.offsetTop;
 	                        diffLeft += elt.offsetLeft;
 	                    }
 					} while ( elt = elt.offsetParent );
-				return {'left': curLeft - diffLeft, 'top': curTop - diffTop};
+				return {'diffLeft': diffLeft, 'diffTop': diffTop};
 				}
 			}
 
 			// Return the value the given property is set to on the given element
 			function getRenderedStyle( elt, prop ) {
 				// modern js-friendly browsers
-				if ( doc.defaultView && doc.defaultView.getComputedStyle ) {
-					return doc.defaultView.getComputedStyle( elt, null )[prop];
+				if ( _doc.defaultView && _doc.defaultView.getComputedStyle ) {
+					return _doc.defaultView.getComputedStyle( elt, null )[prop];
 				// oldschool/IE browsers
 				} else if ( elt.currentStyle ) {
 					return elt.currentStyle[prop];
